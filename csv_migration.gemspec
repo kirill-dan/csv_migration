@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name          = 'csv_migration'
-  s.version       = '0.0.1'
+  s.version       = '0.0.2'
   s.date          = '2019-11-10'
   s.summary       = 'Migration system from a csv file'
   s.description   = 'You can make parsing CSV file, generate from it hash data and then save to DB'
