@@ -1,6 +1,6 @@
 # csv_migration
-The gem for flexible parsing CSV files for migration data to DB. For example, you can have an old project with a very difficult structure of data. 
-Or you can't make export data to another format.  You can create easily a CSV file with all the needed data for migration to a new system. 
+The gem for flexible parsing CSV files for migration data to DB. For example, you can have an old project with a very complex data structure. 
+Or you can't make export data to another format (XML, JSON). You can create a CSV file easily with all the data needed for migration to a new system. 
 And create settings for parser for save data to a new DB.
 
 ## Installation
@@ -11,7 +11,7 @@ gem install csv_migration
 ```
 
 ## Usage:
-You should create a new class and then make inherit from the CsvMigration class.
+You should create a new class and then inherit it from the CsvMigration class.
 
 For example:
 ```ruby
@@ -52,12 +52,12 @@ class MyParser < CsvMigration
     #
     # @param [Hash] record in specific hash format
     def add_record_to_db(record)
-      # Search data of model if it necessary
+      # Search data of model if is necessary
       client = User.find_by(email: record[:client_email])
     
       if client.nil?
         # Save error to array @not_saved_records
-        save_error(record, "Client doesn't found in the DB by email")
+        save_error(record, "Client wasn't found in the DB by email")
         return
       end
     
@@ -72,13 +72,13 @@ class MyParser < CsvMigration
       rating = update_or_create_data(data)
     
       if rating.nil?
-        save_error(record, "Record doesn't created!")
-        puts "Error. Record doesn't created!"
+        save_error(record, "Record has not been created!")
+        puts "Error. Record has not been created!"
     
         return
       end
     
-      puts "Record successful created/updated with id: #{rating.id}"
+      puts "Record successfully created/updated with id: #{rating.id}"
     end
 end
 ```
@@ -88,13 +88,13 @@ In the constructor you should call **super** with a file name:
 super(file_name: 'my_data.csv')
 ```
 
-You can set the second param as delimiter:
+You can specify the second param is delimiter
 ```ruby
 super(file_name: 'my_data.csv', delimiter: ';')
 ```
-By default: ***delimiter: ';'***
+By default: **delimiter** = ';'
 
-Then you should to set relation in @ref_csv_head_from_file hash variable: 
+Then you should specify relation in @ref_csv_head_from_file (hash variable): 
 ```ruby
 @ref_csv_head_from_file = {
     'email client' => {
@@ -117,7 +117,7 @@ Then you should to set relation in @ref_csv_head_from_file hash variable:
     }
 }
 ```
-Keys of hash - it's header name for columns in a CSV file
+Keys of hash - it's header name of columns in a CSV file
 
 Example CSV file:
 ```
@@ -125,8 +125,8 @@ email client;name;score;review;surname
 aaa@aa.aa;Alex;70;Goog man;Snow
 ```
 
-In every hash for a key you can to use next keys:  
-**require:** a field should be not empty (true/false). For true will generate an error if the field is empty  
+In every hash of a key, you can use the next symbols:  
+**require:** a field should not be empty (true/false). For true will generate an error if the field is empty  
 **replace:** need to use @replace_dict ( @replace_dict = { 'what need replace' => 'replace to this' } ) (true/false)  
 **prefix:** need to add value as a prefix from a field header name (header name from CSV file) (string)  
 **validate:** callback method which necessary call for validating a specific format (symbol)  
@@ -190,12 +190,12 @@ In the method add_record_to_db(record) you can get every record from @parsed_dat
 #
 # @param [Hash] record in specific hash format
 def add_record_to_db(record)
-  # Search data of model if it necessary
+  # Search data of model if is necessary
   client = User.find_by(email: record[:client_email])
 
   if client.nil?
     # Save error to array @not_saved_records
-    save_error(record, "Client doesn't found in the DB by email")
+    save_error(record, "Client wasn't found in the DB by email")
     return
   end
 
@@ -210,13 +210,13 @@ def add_record_to_db(record)
   rating = update_or_create_data(data)
 
   if rating.nil?
-    save_error(record, "Record doesn't created!")
-    puts "Error. Record doesn't created!"
+    save_error(record, "Record has not been created!")
+    puts "Error. Record has not been created!"
 
     return
   end
 
-  puts "Record successful created/updated with id: #{rating.id}"
+  puts "Record successfully created/updated with id: #{rating.id}"
 end
 ```
 For save error to a file with errors you can use next method:

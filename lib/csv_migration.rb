@@ -11,7 +11,7 @@ class CsvMigration
 
     @file_name = @file_name_csv.split('.csv').first
 
-    # File for export correct data from base file
+    # File for export correct data from the base file
     @correct_file_data_csv = File.expand_path("v_parser_correct_#{@file_name}.csv")
     @errors_log = File.expand_path("v_parser_errors_#{@file_name}.log")
     @duplicates_log = File.expand_path("v_parser_duplicates_#{@file_name}.log")
@@ -56,7 +56,7 @@ class CsvMigration
     # Key: column name in the csv file
     # Value:
     #         field: a field name of a table in a DB (symbol)
-    #         require: a field should be not empty (true/false)
+    #         require: a field should not be empty (true/false)
     #         replace: need to use @replace_dict ( @replace_dict = { 'what need replace' => 'replace to this' } ) (true/false)
     #         prefix: need to add value as a prefix from a field header name (header name from CSV file) (string)
     #         validate: callback method which necessary call for validating a specific format (symbol)
@@ -100,7 +100,7 @@ class CsvMigration
 
       @parsed_data << { id: @line_num - 1 }.merge(records)
 
-      puts "Left parse #{@count_file_lines - @line_num} lines"
+      puts "Parse left #{@count_file_lines - @line_num} lines"
       @line_num += 1
       @counter_good_records += 1
     end
@@ -120,7 +120,7 @@ class CsvMigration
     puts "Bad records: #{@errors.values.sum}"
     puts "Duplicate records: #{@counter_duplicates}"
     puts "Duplicates more than one field: #{double_duplicates}" if double_duplicates.positive?
-    puts "Success parsed records: #{@parsed_data.size}"
+    puts "Successfully parsed records: #{@parsed_data.size}"
 
     error_actions if !@errors.values.sum.zero? || !@counter_duplicates.zero?
 
@@ -201,7 +201,7 @@ class CsvMigration
   # @param [Object] value hash data from dict
   def check_field(data, key, value)
     if @parsing_file_header.find_index(key).nil?
-      puts "Please, correct settings in the @ref_csv_head_from_file hash. Key #{key} doesn't found in the header of #{@file_name_csv} file!"
+      puts "Please, correct settings in the @ref_csv_head_from_file hash. Key #{key} has not been found in the header of #{@file_name_csv} file!"
       exit
     end
 
@@ -447,11 +447,11 @@ class CsvMigration
   def add_record_to_db(_record)
     raise 'You should make realization callback method add_record_to_db(record)'
 
-    # Search data of model if it necessary
+    # Search data of model if is necessary
     # user = User.find_by(email: record[:email].downcase)
     #
     # if user.nil?
-    #   save_error(record, "User doesn't found in the DB by email")
+    #   save_error(record, "User has not been found in the DB by email")
     #   next
     # end
   end
