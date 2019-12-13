@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.date          = '2019-11-10'
   s.summary       = 'Migration system from a csv file'
   s.description   = 'You can make parsing CSV file, generate from it hash data and then save to DB'
-  s.authors       = ['Danilevsky Kirill (5)']
+  s.authors       = ['Danilevsky Kirill (Syndicode.com)']
   s.email         = 'k.danilevsky@gmail.com'
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.require_paths = ['lib']
