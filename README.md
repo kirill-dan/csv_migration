@@ -83,10 +83,16 @@ class MyParser < CsvMigration
 end
 ```
 
-In the constructor you should call super with a file name: 
+In the constructor you should call **super** with a file name: 
 ```
 super(file_name: 'my_data.csv')
 ```
+
+You can set the second param as delimiter:
+```ruby
+super(file_name: 'my_data.csv', delimiter: ';')
+```
+By default: ***delimiter: ';'***
 
 Then you should to set relation in @ref_csv_head_from_file hash variable: 
 ```ruby
@@ -112,6 +118,12 @@ Then you should to set relation in @ref_csv_head_from_file hash variable:
 }
 ```
 Keys of hash - it's header name for columns in a CSV file
+
+Example CSV file:
+```
+email client;name;score;review;surname
+aaa@aa.aa;Alex;70;Goog man;Snow
+```
 
 In every hash for a key you can to use next keys:  
 **require:** a field should be not empty (true/false). For true will generate an error if the field is empty  
@@ -225,6 +237,8 @@ In the finish, the parser will create new files with logs (errors, duplicates, n
 
 ## Attention
 All duplicates will remove from @parsed_data. For example, if parser will find two same emails then these two emails will remove from @parsed_data
+
+## Execution
 
 For start parsing you should call your parser class:
 ```ruby
