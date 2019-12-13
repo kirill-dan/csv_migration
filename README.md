@@ -249,5 +249,5 @@ parser.call
 ## History
 Versions:
 
-0.0.1 - Add new functional
+0.0.1 - Add new functional  
 0.0.2 - Orthographic errors fixed
