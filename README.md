@@ -17,7 +17,11 @@ For example:
 ```ruby
 class MyParser < CsvMigration
     def initialize
-      super(file_name: 'my_data.csv')
+      # @param [String] file_name with extension (my_file.csv)
+      # @param [String] file_path path to file. By default current folder
+      # @param [String] delimiter for parsing, by default = ';'
+      # @param [String] cli mode. If true then class will use only for command line. By default false
+      super(file_name: 'my_data.csv', file_path: 'public/csv/', delimiter: ';', cli: true)
     
       # Relation of header name from the file with a specific field name of a table
       @ref_csv_head_from_file = {
@@ -250,4 +254,5 @@ parser.call
 Versions:
 
 0.0.1 - Add new functional  
-0.0.2 - Orthographic errors fixed
+0.0.2 - Orthographic errors fixed  
+0.0.3 - Added exceptions ArgumentError, cli mode and path to file

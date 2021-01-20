@@ -3,22 +3,26 @@
 # Description: Parse and test data from a csv file.
 class CsvMigration
   # @param [String] file_name with extension (my_file.csv)
+  # @param [String] file_path path to file. By default current folder
   # @param [String] delimiter for parsing, by default = ';'
-  def initialize(file_name:, delimiter: ';')
+  # @param [String] cli mode. If true then class will use only for command line. By default false
+  def initialize(file_name:, file_path: '', delimiter: ';', cli: false)
     # File name for parsing in csv format
     @file_name_csv = file_name
+    @file_path = file_path
     @delimiter = delimiter
+    @cli = cli
 
     @file_name = @file_name_csv.split('.csv').first
 
     # File for export correct data from the base file
-    @correct_file_data_csv = File.expand_path("v_parser_correct_#{@file_name}.csv")
-    @errors_log = File.expand_path("v_parser_errors_#{@file_name}.log")
-    @duplicates_log = File.expand_path("v_parser_duplicates_#{@file_name}.log")
-    @not_saved_file_data_errors = File.expand_path("v_parser_not_saved_#{@file_name}.log")
+    @correct_file_data_csv = File.expand_path("#{@file_path}v_parser_correct_#{@file_name}.csv")
+    @errors_log = File.expand_path("#{@file_path}v_parser_errors_#{@file_name}.log")
+    @duplicates_log = File.expand_path("#{@file_path}v_parser_duplicates_#{@file_name}.log")
+    @not_saved_file_data_errors = File.expand_path("#{@file_path}v_parser_not_saved_#{@file_name}.log")
 
     # Parsing file
-    @file_for_parsing = File.expand_path(@file_name_csv)
+    @file_for_parsing = File.expand_path(@file_path + @file_name_csv)
 
     # Remove old files
     remove_old_files
@@ -155,6 +159,8 @@ class CsvMigration
 
   # Question action before saving data if exist errors
   def error_actions
+    return unless @cli
+
     print 'This file has errors. Do you want to save data without errors Y/n: '
     respond = STDIN.gets.chomp
 
@@ -201,8 +207,12 @@ class CsvMigration
   # @param [Object] value hash data from dict
   def check_field(data, key, value)
     if @parsing_file_header.find_index(key).nil?
-      puts "Please, correct settings in the @ref_csv_head_from_file hash. Key #{key} has not been found in the header of #{@file_name_csv} file!"
-      exit
+      if @cli
+        puts "Please, correct settings in the @ref_csv_head_from_file hash. Key #{key} has not been found in the header of #{@file_name_csv} file!"
+        exit
+      else
+        raise ArgumentError, "Please, correct settings in the @ref_csv_head_from_file hash. Key #{key} has not been found in the header of #{@file_name_csv} file!"
+      end
     end
 
     if value[:require] && blank?(data[@parsing_file_header.find_index(key)])

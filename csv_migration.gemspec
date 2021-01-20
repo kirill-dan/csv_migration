@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name          = 'csv_migration'
-  s.version       = '0.0.2'
-  s.date          = '2019-11-10'
+  s.version       = '0.0.3'
+  s.date          = '2021-01-20'
   s.summary       = 'Migration system from a csv file'
   s.description   = 'You can make parsing CSV file, generate from it hash data and then save to DB'
-  s.authors       = ['Danilevsky Kirill (Syndicode.com)']
+  s.authors       = ['Danilevsky Kirill']
   s.email         = 'k.danilevsky@gmail.com'
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.require_paths = ['lib']
